@@ -21,16 +21,3 @@ Build the static site:
 ```bash
 mkdocs build --strict
 ```
-
-The project is intentionally kept close to the standard Material for MkDocs layout, so it can also be tested with Zensical as its MkDocs compatibility improves.
-
-## Images
-
-Prepared screenshot placeholders are written as callout blocks throughout the docs. Add screenshots under:
-
-```text
-docs/assets/images/
-```
-
-Then replace the callout with a normal Markdown image reference.
-
