@@ -9,5 +9,3 @@ Source/PPG/Public
 Source/ComputeShader/Public
 ```
 
-If a Doxygen or generated API reference is added later, link it from this section.
-

@@ -54,4 +54,4 @@ The plugin includes third-party notices under:
 ThirdPartyNotices/
 ```
 
-VoxelCore-derived code is bundled in the plugin, and the plugin credits DeathreyCG's Niagara ocean wave simulation tutorial as the basis for the ocean simulation approach.
+VoxelCore-derived code is bundled in the plugin, and the plugin uses DeathreyCG's Niagara ocean wave simulation tutorial as the basis for the ocean simulation.

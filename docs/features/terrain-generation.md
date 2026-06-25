@@ -27,14 +27,15 @@ Enable `Generate Collisions` on the spawner to build collision for generated ter
 
 `Collision Disable Distance` controls how far collision remains active. This helps avoid paying collision cost for distant terrain.
 
-## Nanite and Ray Tracing
+## Nanite
 
-The spawner exposes:
+Enable `Nanite Landscape` when the project benefits from Nanite terrain rendering and the target platform supports it. Nanite chunks can render high-detail planet surfaces well, but they are slower to build than normal static mesh chunks. Expect higher generation/build cost when chunks are created or regenerated.
 
-- `Nanite Landscape`
-- `Generate Ray Tracing Proxy`
+## Ray Tracing Proxy and Lumen
 
-Use these according to project rendering needs and platform targets. Nanite terrain is useful for high-detail planet surfaces, while ray tracing proxies add cost and should be enabled only when the project needs them.
+Enable `Generate Ray Tracing Proxy` when the planet needs to be visible to hardware ray tracing features. Software Lumen is not supported for the generated planet terrain.
+
+Ray tracing proxies add build and memory cost, so keep them disabled when the project does not use Hardware Lumen or other hardware ray tracing features.
 
 ## UV Precision
 
@@ -42,7 +43,7 @@ The spawner exposes two terrain UV precision settings:
 
 | Setting | Description |
 | --- | --- |
-| `Generate Second UV Channel` | Generates a second terrain UV channel used by `Planet UVs` for high-precision chunk UV reconstruction. |
+| `Generate Second UV Channel` | Generates a second terrain UV channel used by `Planet UVs` for high-precision chunk UV reconstruction. Forces `Use Full Precision UVs` option to be enabled.|
 | `Use Full Precision UVs` | Uses full 32-bit precision for terrain UV storage when the second UV channel is disabled. |
 
 Use one of these if material UV precision issues appear on large planets.

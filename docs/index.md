@@ -11,7 +11,7 @@ The plugin contains runtime code, shaders, editor-facing data assets, material n
 - A `Planet Data Asset` for planet dimensions, LOD, materials, biome layers, water, and generated biome data.
 - A `Planet Spawner` actor that generates, updates, and destroys runtime terrain chunks.
 - Custom `PPG` material nodes for planet-space position, terrain elevation, biome masks, biome material blending, vertex colors, water shading, and underwater post processing.
-- Chunked terrain generation with Nanite/static mesh support, collision generation, ray tracing proxy support, and object pools.
+- Chunked terrain generation with static mesh or Nanite chunk output, collision generation, Hardware Lumen ray tracing proxy support, and object pools.
 - Biome-driven foliage using foliage data assets, mesh variants, placement filters, vertex-color density masks, LOD entries, and optional GPU foliage components.
 - Optional Niagara-driven ocean wave simulation and planetary water materials.
 - Example content under the plugin's `Content/Example` folder.

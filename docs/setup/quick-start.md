@@ -89,7 +89,7 @@ Select the placed spawner Blueprint in the level and review the first settings y
 | `Chunk Quality` | Vertex resolution per generated chunk. Higher values cost more memory and build time. |
 | `Generate Collisions` | Creates collision for terrain chunks. |
 | `Generate Foliage` | Enables foliage generation from biome foliage data. |
-| `Nanite Landscape` | Builds Nanite terrain meshes where supported by the project. |
+| `Nanite Landscape` | Builds Nanite terrain meshes where supported. Nanite chunks are slower to build than normal chunks, so enable it for rendering needs rather than faster generation. |
 | `Use Editor Tick` | Allows editor-time generation/update behavior. |
 
 ## 7. Build or Regenerate the Planet

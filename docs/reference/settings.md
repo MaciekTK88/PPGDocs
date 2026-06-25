@@ -41,10 +41,10 @@ This page summarizes the most important editor-facing settings.
 | `Chunk Quality` | Terrain vertex resolution per chunk. |
 | `Generate Collisions` | Builds collision for terrain chunks. |
 | `Generate Foliage` | Generates biome foliage. |
-| `Generate Ray Tracing Proxy` | Generates ray tracing support where applicable. |
+| `Generate Ray Tracing Proxy` | Generates a ray tracing proxy for hardware ray tracing features. Required for Hardware Lumen; Software Lumen is not supported for generated planet terrain. |
 | `Collision Disable Distance` | Distance for disabling collision. |
 | `Async Init Body` | Enables async body initialization. |
-| `Nanite Landscape` | Builds Nanite landscape chunks. |
+| `Nanite Landscape` | Builds Nanite terrain chunks. Nanite can improve rendering of high-detail surfaces, but chunk build time is slower than normal static mesh chunks. |
 | `Generate Second UV Channel` | Adds high-precision reconstruction UV channel. |
 | `Use Full Precision UVs` | Uses 32-bit UV precision when second UV channel is disabled. |
 | `Global Foliage Density Scale` | Global foliage density multiplier. |
