@@ -1,0 +1,64 @@
+site_name: Procedural Planet Generation
+site_description: Documentation for the Procedural Planet Generation Unreal Engine plugin.
+site_author: ChrumBum studio
+
+theme:
+  name: material
+  logo: assets/images/PPG-logo.svg
+  favicon: assets/images/PPG-logo.svg
+  features:
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+  palette:
+    - scheme: slate
+      primary: blue grey
+      accent: indigo
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Setup:
+      - setup/index.md
+      - Installation: setup/installation.md
+      - Quick Start: setup/quick-start.md
+  - Core Concepts:
+      - concepts/index.md
+      - Runtime Architecture: concepts/runtime-architecture.md
+      - Planet Data: concepts/planet-data.md
+      - Material Pipeline: concepts/material-pipeline.md
+      - Biomes: concepts/biomes.md
+  - Features:
+      - features/index.md
+      - Terrain Generation: features/terrain-generation.md
+      - Water: features/water.md
+      - Foliage: features/foliage.md
+      - Clouds and Gravity: features/clouds-and-gravity.md
+  - Reference:
+      - reference/index.md
+      - Asset Reference: reference/assets.md
+      - Material Nodes: reference/material-nodes.md
+      - Exposed Material Parameters: reference/exposed-material-parameters.md
+      - Settings: reference/settings.md
+      - Runtime API: reference/runtime-api.md
+  - Troubleshooting: troubleshooting.md

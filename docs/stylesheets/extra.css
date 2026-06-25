@@ -1,0 +1,22 @@
+.md-header {
+  background-color: #2b2b2b;
+}
+
+.md-tabs {
+  background-color: #000000;
+}
+
+.md-header__button.md-logo {
+  margin: 0.18rem 0.45rem 0.18rem 0.2rem;
+  padding: 0.12rem;
+}
+
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 2rem;
+  width: 2rem;
+}
+
+.md-header__title {
+  margin-left: 0.15rem;
+}
