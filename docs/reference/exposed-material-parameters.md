@@ -8,7 +8,7 @@ These parameters are set on the `Planet Material` assigned in the Planet Data as
 
 | Name | Type | Purpose |
 | --- | --- | --- |
-| `BiomeMap` | Texture | Per-chunk render target containing top-three biome IDs and strengths. Use a Texture Object Parameter with this exact name for `Planet Biome Map Sample`. |
+| `BiomeMap` | Texture | Per-chunk render target containing the three strongest biome IDs and strengths. `Planet Biome Map Sample` owns this fixed parameter; no separate parameter node is needed. |
 | `recursionLevel` | Scalar | Chunk recursion distance from the Planet Data maximum recursion level. |
 | `PlanetRadius` | Scalar | Planet radius from the Planet Data asset. |
 | `NoiseHeight` | Scalar | Height scale from the Planet Data asset. |
@@ -27,8 +27,13 @@ These parameters are set on the `Planet Material` assigned in the Planet Data as
 | `PPG_SurfaceBiomeEntryMap1` | Vector | Internal remap for Planet Data biome indices 4-7 to surface material output entries. |
 | `PPG_SurfaceBiomeEntryMap2` | Vector | Internal remap for Planet Data biome indices 8-11 to surface material output entries. |
 | `PPG_SurfaceBiomeEntryMap3` | Vector | Internal remap for Planet Data biome indices 12-15 to surface material output entries. |
+| `PPG_BiomeStrengthIndex_<expression>_<entry>` | Scalar | Planet Data biome index bound to one named `Planet Biome Strengths` output. Unmatched names use `-1`. |
 
-The `PPG_SurfaceBiomeEntryMap*` parameters are generated from matching Planet Data biome names to `Planet Biome Material Output` entry names. They are implementation parameters used by `Planet Biome Map Sample`; do not author gameplay logic against them.
+The `PPG_SurfaceBiomeEntryMap*` parameters are generated from matching Planet Data biome names to `Planet Biome Material Output` entry names. The output node uses them to map raw Planet Data biome IDs to its own entry order.
+
+The `PPG_BiomeStrengthIndex_*` parameters are generated from the stable expression and entry identities on `Planet Biome Strengths`. Every terrain chunk sets them from its own Planet Data asset, so multiple planets can share one parent surface material while using different biome lists or orders.
+
+These are implementation parameters; do not set them manually or author gameplay logic against their generated names.
 
 ## Water Parameters
 
@@ -70,5 +75,6 @@ Some PPG material nodes compile their own parameter references:
 | `ChunkLocationHigh` / `ChunkLocationLow` | Vector | `Planet UVs` |
 | `ChunkSizeHigh` / `ChunkSizeLow` | Scalar | `Planet UVs` |
 | `PlanetSpaceRotation` | Vector | `Planet UVs` |
-| `PPG_SurfaceBiomeEntryMap0..3` | Vector | `Planet Biome Map Sample` |
-
+| `BiomeMap` | Texture | `Planet Biome Map Sample` |
+| `PPG_SurfaceBiomeEntryMap0..3` | Vector | `Planet Biome Material Output` |
+| `PPG_BiomeStrengthIndex_<expression>_<entry>` | Scalar | `Planet Biome Strengths` |

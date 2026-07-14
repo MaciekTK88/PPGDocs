@@ -27,11 +27,13 @@ Assign this asset to the `Planet Data` field on the placed spawner Blueprint.
 The planet data asset controls:
 
 - planet radius and height scale
+- deterministic generation seed
 - minimum and maximum recursion levels
 - surface, generation, and biome mask materials
 - biome layer list
-- biome cell layout and blending settings
 - optional water settings
+
+Biome-cell layout is authored on `Planet Biome Mask Output`; biome transition and warp settings are authored on `Planet Elevation Output`.
 
 ![Planet Data assigned on the placed spawner Blueprint](../assets/images/planet-data-assigned.png)
 
@@ -57,7 +59,7 @@ Each layer can have:
 
 - a display name
 - optional foliage data
-- material pins synchronized into the PPG material output nodes
+- material pins matched by name across the PPG material output nodes
 
 Layer order matters. Later biome layers have higher biome-mask priority than earlier layers.
 
@@ -90,13 +92,14 @@ Select the placed spawner Blueprint in the level and review the first settings y
 | `Generate Collisions` | Creates collision for terrain chunks. |
 | `Generate Foliage` | Enables foliage generation from biome foliage data. |
 | `Nanite Landscape` | Builds Nanite terrain meshes where supported. Nanite chunks are slower to build than normal chunks, so enable it for rendering needs rather than faster generation. |
+| `Max Concurrent GPU Generations` | Limits terrain and foliage GPU jobs waiting for readback. |
 | `Use Editor Tick` | Allows editor-time generation/update behavior. |
 
 ## 7. Build or Regenerate the Planet
 
-On the placed spawner Blueprint, call `Build Planet` or `Regenerate Planet` from Blueprint, C++, or editor tooling.
+The placed Blueprint normally calls `Build Planet` for you. Use `Regenerate Planet` after runtime changes that require a full rebuild.
 
-Generation runs chunk by chunk. `Last Generation Time Milliseconds` and `Show Generation Debug` help inspect generation progress and cost.
+Generation runs chunk by chunk. `Show Generation Debug`, `Last Generation Time Milliseconds`, and `Get Planet Generation Status` expose progress, phase, timing, and errors.
 
 ## Optional: Open the Example Level
 

@@ -23,8 +23,9 @@ Common starting points:
 ```text
 Content/Example/Level/PPGExampleLevel
 Content/Example/Assets/ExamplePlanetData
-Content/Example/Assets/ExamplePlanetGenerationMaterial
-Content/Example/Assets/ExamplePlanetBiomeMasks
+Content/Example/Assets/M_PPG_ExampleGeneration
+Content/Example/Assets/M_PPG_ExampleBiomeMask
+Content/Example/Assets/M_PPG_ExampleSurface
 Content/Example/Assets/Biomes/
 ```
 

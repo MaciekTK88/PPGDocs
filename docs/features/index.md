@@ -7,4 +7,4 @@ This section covers the plugin's primary runtime features:
 - foliage
 - cloud parameter updates
 - gravity-relative controller utilities
-
+- double-precision plugin floating origin for very large worlds

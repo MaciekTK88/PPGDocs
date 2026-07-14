@@ -9,8 +9,8 @@ A complete planet requires three materials. They are not optional for the normal
 | Material | Required Contents | Purpose |
 | --- | --- | --- |
 | `Biome Mask Material` | Exactly one `Planet Biome Mask Output` node. | Bakes the planet-wide biome-cell texture. |
-| `Generation Material` | Exactly one `Planet Terrain Output` and exactly one `Planet Vertex Color Output`. | Computes terrain height, per-biome height, normals, biome data, and vertex color data for chunk generation. |
-| `Planet Material` | Runtime surface graph. When using biomes, it must sample the chunk `BiomeMap` and feed `Planet Biome Material Output`. | Renders generated terrain chunks. |
+| `Generation Material` | Exactly one `Planet Elevation Output` and exactly one `Planet Vertex Color Output`. | Computes terrain height, per-biome height, normals, biome data, and vertex color data for chunk generation. |
+| `Planet Material` | Runtime surface graph. When using biomes, it uses `Planet Biome Map Sample` and feeds `Planet Biome Material Output`. | Renders generated terrain chunks. |
 
 The rebuild pipeline checks the first two materials strictly. If the biome mask material has zero or multiple `Planet Biome Mask Output` nodes, or the generation material is missing either generation output node, the rebuild fails.
 
@@ -23,8 +23,9 @@ The rebuild pipeline checks the first two materials strictly. If the biome mask 
 5. The chunk builds a runtime static mesh or Nanite mesh from the generated positions, packed normals, UVs, vertex colors, and shared triangle indices.
 6. Collision, ray tracing proxy data, water meshes, and foliage data are created according to the spawner settings.
 7. The visible `Planet Material` is assigned to the terrain mesh. The chunk also creates a per-chunk runtime render target named `BiomeMap` and sets it as a texture parameter on that material.
-8. In the surface material, `Planet Biome Map Sample` reads `BiomeMap` and outputs the top three biome IDs and strengths.
-9. `Planet Biome Material Output` uses those IDs and strengths to select and blend the biome Material Attributes.
+8. In the surface material, `Planet Biome Map Sample` owns and reads the fixed `BiomeMap` texture parameter and outputs the three strongest `Biome IDs` and `Strengths`.
+9. `Planet Biome Material Output` maps the Planet Data biome IDs to its named entries, then selects and blends the corresponding Material Attributes.
+10. `Planet Biome Strengths` can expose any of those strengths as named scalar masks for other surface-material logic.
 
 `Biome Cell Map` and `BiomeMap` are different resources. `Biome Cell Map` is the baked Planet Data texture used to choose biomes across the planet. `BiomeMap` is generated per chunk and is used by the surface material to render the chunk's current biome blend.
 
@@ -32,19 +33,21 @@ The rebuild pipeline checks the first two materials strictly. If the biome mask 
 
 The biome mask material must contain exactly one `Planet Biome Mask Output` node.
 
-The node has one scalar mask input per biome entry. Later biome layers have higher priority during biome map baking.
+The node has one scalar mask input per biome entry. Later biome layers have higher priority during biome map baking. It also owns `Biome Cell Resolution` and `Biome Cell Seed`.
 
 ## Generation Material
 
 The generation material must contain:
 
-- one `Planet Terrain Output`
+- one `Planet Elevation Output`
 - one `Planet Vertex Color Output`
 
-`Planet Terrain Output` exposes:
+`Planet Elevation Output` exposes:
 
 - `Global Height`
 - one height input per biome entry
+
+It also owns biome transition, height-based material blending, and Voronoi warp settings. These values are synchronized into the Planet Data asset's cooked runtime cache by the rebuild pipeline.
 
 `Planet Vertex Color Output` exposes one vertex color input per biome entry. The resulting vertex colors can be used by terrain materials and by foliage density masks.
 
@@ -55,7 +58,7 @@ Typical generation nodes:
 - `Planet Global Height`
 - `Planet Cell Origin`
 - `Planet Cell Position`
-- `Planet Terrain Output`
+- `Planet Elevation Output`
 - `Planet Vertex Color Output`
 
 ## Surface Material
@@ -64,17 +67,27 @@ The surface material is the visible material assigned as `Planet Material` on th
 
 For biome materials, use this graph shape:
 
-1. Add a Texture Object Parameter named exactly `BiomeMap`.
-2. Plug that texture object into `Planet Biome Map Sample`.
-3. Connect `Planet Biome Map Sample` output `Top 3 Biome IDs` to `Planet Biome Material Output` input `Top 3 Biome IDs`.
-4. Connect `Planet Biome Map Sample` output `Top 3 Strengths` to `Planet Biome Material Output` input `Top 3 Strengths`.
-5. Connect one Material Attributes graph to each named biome input on `Planet Biome Material Output`.
-6. Connect `Planet Biome Material Output` to the material's Material Attributes output.
+1. Add `Planet Biome Map Sample`. The node owns the fixed texture parameter `BiomeMap`; no separate texture-object node is required.
+2. Connect its `Biome IDs` output to `Planet Biome Material Output` input `Biome IDs`.
+3. Connect its `Strengths` output to `Planet Biome Material Output` input `Biome Strengths`.
+4. Connect one Material Attributes graph to each named biome input on `Planet Biome Material Output`.
+5. Connect `Planet Biome Material Output` to the material's Material Attributes output.
 
-`Planet Biome Map Sample` will not compile without a texture object input. At runtime, terrain chunks set the `BiomeMap` texture parameter automatically.
+At runtime, every terrain chunk replaces the sample node's `BiomeMap` parameter with its generated per-chunk texture.
 
-!!! warning "Do not use a Texture Sample parameter here"
-    The `Planet Biome Map Sample` input expects a texture object. Use a Texture Object Parameter named `BiomeMap`, not a sampled color value.
+### Named Biome Strength Masks
+
+`Planet Biome Strengths` exposes named `0-1` masks from the same sampled biome data:
+
+1. Connect `Planet Biome Map Sample` output `Biome IDs` to `Planet Biome Strengths` input `Planet Biome IDs`.
+2. Connect `Planet Biome Map Sample` output `Strengths` to `Planet Biome Strengths` input `Biome Strengths`.
+3. Set `Biome Count` and add an `Entry Name` for each mask required by the graph.
+4. Match each entry name to a biome name in the Planet Data asset.
+5. Use the named scalar outputs for color, roughness, foliage-style surface effects, or other material blending.
+
+A named output is zero when its biome is not one of the top three contributors at the current pixel or its name does not exist in the active Planet Data asset. When `Height Blend Biome Materials` is enabled, these outputs represent the height-blended strengths stored in the chunk `BiomeMap`.
+
+Share one `Planet Biome Map Sample` between `Planet Biome Material Output`, `Planet Biome Strengths`, and the rest of the surface graph. Each separate sample node repeats the biome-map texture loads, accumulation, and sorting. Reusing the same sample keeps that work shared.
 
 ## Name-Based Pin Synchronization
 
@@ -84,7 +97,7 @@ The Planet Data asset normalizes each biome layer name. Empty names become `Biom
 
 This means:
 
-- output node `Entry Names` must match Planet Data biome names to sync correctly
+- output node and `Planet Biome Strengths` entry names must match Planet Data biome names to sync correctly
 - pins are not renamed magically unless the node entry names are edited to match
 - duplicate names use the first matching output entry
 - unmatched Planet Data biomes are mapped to no input for that material output
@@ -98,7 +111,7 @@ In the editor, linked material recompiles are watched by placed `Planet Spawner`
 
 - recompiling the `Biome Mask Material` refreshes the biome map and regenerates the planet
 - recompiling the `Generation Material` refreshes generation node maps and regenerates the planet
-- recompiling the `Planet Material` refreshes the surface biome entry map when it contains `Planet Biome Material Output`
+- recompiling the `Planet Material` refreshes its surface biome mappings when it contains `Planet Biome Material Output` or `Planet Biome Strengths`
 
 If a material change does not produce the expected result, run `Rebuild Planet Pipeline` from the Planet Data asset.
 

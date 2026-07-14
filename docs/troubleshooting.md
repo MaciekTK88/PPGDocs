@@ -31,7 +31,19 @@ Refresh Biome Map
 
 if the biome mask material or biome-cell settings changed. Use `Rebuild Planet Pipeline` for broader material or biome layer changes.
 
-In the editor, applying or recompiling linked materials should usually update placed planets automatically. Biome mask material recompiles refresh the biome map and regenerate; generation material recompiles regenerate; surface material recompiles refresh the surface biome entry map when the material contains `Planet Biome Material Output`.
+In the editor, applying or recompiling linked materials should usually update placed planets automatically. Biome mask material recompiles refresh the biome map and regenerate; generation material recompiles regenerate; surface material recompiles refresh the surface biome mappings when the material contains `Planet Biome Material Output` or `Planet Biome Strengths`.
+
+## A Named Biome Strength Is Always Zero
+
+Check:
+
+- `Planet Biome Map Sample` output `Biome IDs` is connected to `Planet Biome Strengths` input `Planet Biome IDs`.
+- `Strengths` is connected from the same sample to input `Biome Strengths`.
+- The strength entry name matches the Planet Data biome name.
+- The tested location contains that biome among its top three contributors.
+- `Rebuild Planet Pipeline` has been run after changing biome names, entry names, or the linked surface material.
+
+An unmatched biome name and a biome with no contribution at the current pixel both produce zero.
 
 ## Foliage Is Missing
 
@@ -69,6 +81,13 @@ Lower or tune:
 
 - `Max Chunk Generation Starts Per Frame`
 - `Max Chunk Completions Per Frame`
+- `Max Concurrent GPU Generations`
 - `Max Concurrent Mesh Builds`
 - `Foliage Upload Batch Size`
 - `Max Foliage Instances Per Chunk`
+
+## A Floating-Origin Shift Fails
+
+`Shift World Origin` returns false during a level-visibility transaction, while another shift is in progress, or for a non-finite origin. Retry after streaming/visibility work completes.
+
+The subsystem shifts currently loaded levels only. Unloaded World Partition cells and native origin-aware replication require project-specific conversion with `Local To Global` and `Global To Local`.

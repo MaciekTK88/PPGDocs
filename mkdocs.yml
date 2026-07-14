@@ -54,6 +54,7 @@ nav:
       - Water: features/water.md
       - Foliage: features/foliage.md
       - Clouds and Gravity: features/clouds-and-gravity.md
+      - Floating Origin: features/floating-origin.md
   - Reference:
       - reference/index.md
       - Asset Reference: reference/assets.md

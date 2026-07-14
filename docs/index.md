@@ -11,10 +11,11 @@ The plugin contains runtime code, shaders, editor-facing data assets, material n
 - Runtime spherical terrain generation with streamed chunk meshes, configurable LOD recursion, collision support, and editor-time regeneration.
 - Material-driven planet authoring with custom nodes for elevation, biome masks, vertex colors, biome material blending, planet-space coordinates, water, and underwater effects.
 - Planet-wide biome generation with up to 16 biome layers, Voronoi cell controls, smooth transitions, height blending, and name-synced material outputs.
-- Biome-based foliage spawning with mesh variants, density controls, slope and height filters, vertex-color masks, per-entry LOD settings, and CPU or GPU rendering paths.
+- Biome-based foliage spawning with mesh variants, density controls, slope and height filters, vertex-color masks, cross-chunk clustering, per-entry LOD/WPO settings, and CPU or GPU rendering paths.
 - Planetary ocean support with generated water meshes, water skirts, custom-depth underwater coverage, water material nodes, and Niagara wave simulation parameters.
 - Rendering options for standard static mesh chunks, Nanite terrain chunks, collision, and ray tracing proxy generation for Hardware Lumen projects.
-- Volumetric cloud parameter helpers and gravity-relative controller utilities for spherical-world gameplay.
+- Volumetric cloud parameter helpers, gravity-relative controller utilities, and a double-precision floating origin for spherical-world gameplay.
+- Blueprint-readable generation phase, progress, timing, and error reporting for loading screens and runtime diagnostics.
 - Example content, materials, data assets, and an example level to use as a working reference.
 
 ## Main Workflow

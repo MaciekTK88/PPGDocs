@@ -14,7 +14,7 @@ Content/Example/Assets/ExamplePlanetData
 | --- | --- |
 | `Planet Radius` | Base radius before elevation is applied. Stored in Unreal units. |
 | `Noise Height` | Converts normalized material elevation to world-space displacement. |
-| `Shader Precision` | Controls whether chunk generation uses the float or double-float shader path. `Automatic` uses the faster float path until planet scale, chunk spacing, height precision, or biome blend precision would make float precision too coarse. |
+| `Generation Seed` | Stable seed supplied to generation material expressions. Identical inputs and seeds produce identical terrain. |
 | `Min Recursion Level` | Lowest terrain recursion level. |
 | `Max Recursion Level` | Highest terrain recursion level. |
 
@@ -36,7 +36,20 @@ Content/Example/Assets/ExamplePlanetData
 
 Layer order matters. Later biome layers have priority over earlier layers in the biome mask pipeline.
 
-Biome names also matter for material output synchronization. The Planet Data biome name must match the `Entry Names` used by the biome output nodes in the biome mask, generation, and surface materials. Empty names are normalized to `Biome 1`, `Biome 2`, and so on.
+Biome names also matter for material synchronization. The Planet Data biome name must match the `Entry Names` used by the biome output nodes in the biome mask, generation, and surface materials, as well as entries on `Planet Biome Strengths`. Empty names are normalized to `Biome 1`, `Biome 2`, and so on.
+
+Named biome-strength bindings are stored per Planet Data asset and applied to each terrain chunk's dynamic material instance. Planet Data assets with different biome orders can therefore use the same parent surface material.
+
+## Settings Owned by Material Outputs
+
+The current pipeline keeps settings next to the graph that consumes them:
+
+| Output Node | Authored Settings |
+| --- | --- |
+| `Planet Biome Mask Output` | `Biome Cell Resolution` and `Biome Cell Seed`. |
+| `Planet Elevation Output` | `Biome Transition`, height-based material blending, blend smoothness, and biome Voronoi warp strength/scale. |
+
+`Planet Data` stores synchronized cooked caches of these values. Edit the output nodes, then run `Rebuild Planet Pipeline`; do not treat the hidden cache fields as authoring controls.
 
 ## Generated Data
 

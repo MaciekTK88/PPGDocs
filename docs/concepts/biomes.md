@@ -15,18 +15,28 @@ Each texel represents one Voronoi cell. At runtime, the terrain shader samples t
 
 The current shader implementation supports up to 16 biome entries.
 
-## Important Settings
+## Biome Mask Output Settings
 
 | Setting | Description |
 | --- | --- |
 | `Biome Cell Resolution` | Number of Voronoi cells along one cube face edge. Higher values add smaller biome cells and a larger generated texture. |
 | `Biome Cell Seed` | Seed for deterministic cell placement. |
-| `Biome Transition Smoothness` | Width of biome influence falloff around cells, expressed as a fraction of one cell. |
+
+These two settings live on the `Planet Biome Mask Output` node.
+
+## Elevation Output Settings
+
+The following settings live on the `Planet Elevation Output` node:
+
+| Setting | Description |
+| --- | --- |
+| `Biome Transition` | Width of biome influence falloff around cells, expressed as a fraction of one cell. |
 | `Height Blend Biome Materials` | Makes the strongest height contribution control material choice in transition areas. |
 | `Biome Material Height Blend Smoothness` | Controls how lower biome materials fade out when height blending is enabled. |
-| `Biome Foliage Minimum Blend Strength` | Ignores weak biome blend contributions for foliage spawning. |
 | `Biome Voronoi Warp Strength` | Distorts the biome lookup position as a fraction of one cell. Zero disables warp. |
 | `Biome Voronoi Warp Scale` | Frequency of the biome lookup warp. |
+
+`Foliage Minimum Biome Blend Strength` is a Planet Spawner performance setting. It ignores weak biome contributions during foliage generation.
 
 ## Foliage and Biomes
 

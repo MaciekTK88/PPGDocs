@@ -11,12 +11,13 @@ The plugin generates a planet as a tree of runtime chunks. Each chunk represents
 | `UChunkObject` | Runtime object representing one terrain chunk and its generated mesh, water mesh, foliage, collision, and generation state. |
 | `UFoliageData` | Data asset describing foliage meshes, density, placement limits, rendering options, and LOD entries. |
 | `UWaterSimulationData` | Data asset containing parameters uploaded to the Niagara ocean simulation system. |
+| `UPPGFloatingOriginSubsystem` | World subsystem that tracks a double-precision global origin and shifts loaded world state. |
 
 ## Chunk Generation Flow
 
 1. `Planet Spawner` starts or ticks generation.
 2. The chunk tree decides which cube-face chunks should exist for the current view and recursion settings.
-3. Each `UChunkObject` initializes generation settings such as chunk location, rotation, size, precision mode, terrain quality, water settings, foliage limits, and collision settings.
+3. Each `UChunkObject` initializes generation settings such as chunk location, rotation, size, terrain quality, water settings, foliage limits, and collision settings.
 4. The terrain compute shader evaluates the generation material over the chunk vertex grid.
 5. GPU output is read back into CPU arrays for vertex positions, vertex colors, packed normals, biome indices, and slopes. UVs are generated on the CPU.
 6. The chunk builds a static mesh or Nanite mesh from the generated positions, packed normals, UVs, vertex colors, and shared triangle indices.
@@ -44,8 +45,15 @@ The spawner also limits work started or completed per frame:
 
 - `Max Chunk Completions Per Frame`
 - `Max Chunk Generation Starts Per Frame`
+- `Max Concurrent GPU Generations`
 - `Max Concurrent Mesh Builds`
 - `Foliage Upload Batch Size`
 - `Max Foliage Instances Per Chunk`
 
 These settings are important when tuning large planets or dense foliage because they control spikes in CPU work, GPU readbacks, mesh builds, and component uploads.
+
+## Floating-Origin Flow
+
+PPG's floating-origin subsystem does not modify Unreal's integer `UWorld::OriginLocation`. It shifts the scene, physics, every currently loaded level, navigation, world-owned components, line batchers, and physics fields, then accumulates the shift in a double-precision `Global Origin`.
+
+Use `Local To Global` and `Global To Local` for persistent coordinates. Native origin-aware replication and unloaded World Partition cells do not know about the PPG origin and require project-specific integration.

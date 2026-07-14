@@ -35,7 +35,9 @@ The plugin ships with the reusable spawner Blueprint, example content, and suppo
 - `Content/PlanetSpawnerBP`, the Blueprint users normally place in a level
 - `Content/Example/Level/PPGExampleLevel`
 - `Content/Example/Assets/ExamplePlanetData`
-- `Content/Example/Assets/ExamplePlanetGenerationMaterial`
+- `Content/Example/Assets/M_PPG_ExampleGeneration`
+- `Content/Example/Assets/M_PPG_ExampleBiomeMask`
+- `Content/Example/Assets/M_PPG_ExampleSurface`
 - Water materials, render targets, Niagara modules, and water simulation assets under `Content/Water`
 - Cloud material assets under `Content/Clouds`
 
