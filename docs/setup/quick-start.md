@@ -112,3 +112,14 @@ Content/Example/Level/PPGExampleLevel
 Use it to inspect a complete planet configuration, example biome assets, water setup, and character/controller assets.
 
 ![Example level open in the editor](../assets/images/example-level-open.png)
+
+## Alternative Quick Start Video Tutorial
+
+<iframe
+  width="100%"
+  style="aspect-ratio: 16 / 9; border: 0;"
+  src="https://www.youtube-nocookie.com/embed/4XpAPtLD_s0"
+  title="Procedural Planet Generation Quick Start tutorial"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+  allowfullscreen>
+</iframe>

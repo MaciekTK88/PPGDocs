@@ -31,5 +31,3 @@ The subsystem updates the render scene, supported physics scene, currently loade
 
 !!! warning "This is separate from Unreal's native origin rebasing"
     PPG deliberately leaves `UWorld::OriginLocation` unchanged. Native origin-aware replication helpers and unloaded World Partition cells therefore do not know about its accumulated origin.
-
-Store important absolute positions in PPG global space and convert at system boundaries. Projects using multiplayer or World Partition should add explicit replication and cell-placement integration rather than mixing PPG coordinates with `RebaseOntoLocalOrigin` or `RebaseOntoZeroOrigin`.

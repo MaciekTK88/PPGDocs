@@ -26,19 +26,20 @@ The plugin also includes VoxelCore-derived support code internally. No separate 
 | --- | --- |
 | `PPG` | Main runtime/editor-facing planet generation code. |
 | `ComputeShader` | GPU compute shader interfaces used by terrain and foliage generation. |
-| `VoxelCore` | Bundled utility code used by the runtime implementation. |
+| `VoxelCore` | Bundled utility code used for mesh generation. |
 
 ## Included Content
 
 The plugin ships with the reusable spawner Blueprint, example content, and support assets, including:
 
-- `Content/PlanetSpawnerBP`, the Blueprint users normally place in a level
+- `Content/PlanetSpawnerBP`, the Blueprint users place in a level to spawn planet
 - `Content/Example/Level/PPGExampleLevel`
 - `Content/Example/Assets/ExamplePlanetData`
 - `Content/Example/Assets/M_PPG_ExampleGeneration`
 - `Content/Example/Assets/M_PPG_ExampleBiomeMask`
 - `Content/Example/Assets/M_PPG_ExampleSurface`
-- Water materials, render targets, Niagara modules, and water simulation assets under `Content/Water`
+- `Content/Example/Assets/Character/ExamplePlanetCharacter`
+- Water materials and water simulation assets under `Content/Water`
 - Cloud material assets under `Content/Clouds`
 
 ![PPG enabled in the Unreal Plugins window](../assets/images/plugin-enabled.png)
