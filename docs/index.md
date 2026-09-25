@@ -8,13 +8,16 @@ The plugin contains runtime code, shaders, editor-facing data assets, material n
 
 ## What PPG Provides
 
-- Runtime spherical terrain generation with streamed chunk meshes, configurable LOD recursion, collision support, and editor-time regeneration.
+- Runtime spherical terrain generation with streamed chunk meshes, configurable LOD recursion, and editor-time regeneration.
 - Material-driven planet authoring with custom nodes for elevation, biome masks, vertex colors, biome material blending, planet-space coordinates, water, and underwater effects.
 - Planet-wide biome generation with up to 16 biome layers, Voronoi cell controls, smooth transitions, height blending, and name-synced material outputs.
+- Texture-masked terrain stamps for height sculpting, biome, material, foliage and vertex-color painting, and terrain cutouts.
 - Biome-based foliage spawning with mesh variants, density controls, slope and height filters, vertex-color masks, cross-chunk clustering, per-entry LOD/WPO settings, and CPU or GPU rendering paths.
-- Planetary ocean support with generated water meshes, water skirts, custom-depth underwater coverage, water material nodes, and Niagara wave simulation parameters.
-- Rendering options for standard static mesh chunks, Nanite terrain chunks, collision, and ray tracing proxy generation for Hardware Lumen projects.
+- Planetary ocean support with generated water meshes, water skirts, custom-depth underwater coverage, water material nodes, and a native GPU wave simulation.
+- Invoker-driven terrain and foliage collision streaming on a planet-wide virtual grid, independent of visible terrain LOD.
+- Rendering options for standard static mesh chunks, Nanite terrain chunks, and ray tracing proxy generation for Hardware Lumen projects.
 - Volumetric cloud parameter helpers, gravity-relative controller utilities, and a double-precision floating origin for spherical-world gameplay.
+- Planet-relative editor camera controls for intuitive surface navigation and surface-aligned actor placement anywhere on a planet.
 - Blueprint-readable generation phase, progress, timing, and error reporting for loading screens and runtime diagnostics.
 - Example content, materials, data assets, and an example level to use as a working reference.
 
@@ -41,8 +44,9 @@ ProceduralPlanetGeneration/
   Shaders/
   Source/
     PPG/
+    PPGEditor/
     ComputeShader/
     VoxelCore/
 ```
 
-`PPG` is the main runtime module. `ComputeShader` contains the planet compute shader dispatch/readback layer. `VoxelCore` is bundled support code derived from VoxelCore, so users do not need to install a separate VoxelCore plugin.
+`PPG` is the main runtime module. `PPGEditor` contains the editor camera integration. `ComputeShader` contains the planet compute shader dispatch/readback layer. `VoxelCore` is bundled support code derived from VoxelCore, so users do not need to install a separate VoxelCore plugin.

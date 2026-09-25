@@ -45,6 +45,19 @@ Check:
 
 An unmatched biome name and a biome with no contribution at the current pixel both produce zero.
 
+## A Terrain Stamp Is Not Visible
+
+Check:
+
+- the brush has the intended `Target Planet`
+- `Enabled` and `Brush Opacity` are not zero
+- `Recursion Levels From Max` includes the chunk LOD being viewed
+- `Affect Height Displacement` is enabled when using a height operation or cutout
+- `Biome Name` exactly matches an entry in the target Planet Data asset
+- the selected texture channel contains nonzero values in the tested area
+
+Brush transforms, property edits, deletion, undo, and redo normally update the planet cache automatically. Use `Rebuild Height Brush Cache` on the Planet Spawner if serialized source data changed outside those editor paths.
+
 ## Foliage Is Missing
 
 Check:
@@ -64,8 +77,9 @@ Check:
 - `Generate Water` is enabled on the `Planet Data Asset`.
 - Water materials are assigned.
 - The spawner water tessellation settings are greater than zero.
-- The Niagara plugin is enabled if wave simulation is expected.
-- `Enable Niagara Wave Simulation` is enabled if using the simulation.
+- A `Water Simulation Data` asset is assigned if wave simulation is expected.
+- `Enable Ocean Simulation` is enabled on the spawner.
+- The project targets at least SM5 and includes the shader format used by the packaged build.
 
 ## Terrain Materials Swim or Lose Precision
 

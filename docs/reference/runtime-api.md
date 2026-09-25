@@ -12,18 +12,48 @@ This page lists the main Blueprint/C++ entry points exposed by the plugin.
 | `GetFoliageActor()` | Returns the actor that owns runtime foliage components. |
 | `ClearComponents()` | Clears generated components. |
 | `RegeneratePlanet()` | Clears and rebuilds the generated planet. |
+| `SetChunkQuality(int32)` | Changes chunk resolution during play. Values below `1` are clamped; call `RegeneratePlanet()` to rebuild existing chunks. |
 | `IsGenerationMaterialReady()` | Checks whether the generation material is ready for use. |
-| `GetPlanetGenerationStatus()` | Returns phase, progress, chunk counts, elapsed time, error text, and active state. |
+| `GetPlanetGenerationStatus()` | Returns phase, progress, chunk counts, elapsed time, error text, and active state. Initial collision cells are included while the spawner is configured to wait for them. |
 | `UpdateVolumetricCloudParameters()` | Updates linked volumetric cloud parameters. |
-| `SetNiagaraWaveSimulationEnabled(bool)` | Enables or disables the Niagara water simulation. |
+| `SetOceanSimulationEnabled(bool)` | Enables or disables the native GPU ocean simulation. |
+| `SetNiagaraWaveSimulationEnabled(bool)` | Deprecated compatibility wrapper for `SetOceanSimulationEnabled(bool)`. |
 | `SetNewFloatingWorldOrigin(FVector)` | Makes a current local-world position the new local zero through PPG's double-precision floating origin. Returns whether the shift succeeded. |
 | `SetNewWorldOrigin(FVector)` | Compatibility wrapper around `SetNewFloatingWorldOrigin`. |
+
+Editor-only brush functions:
+
+| Function | Description |
+| --- | --- |
+| `RebuildHeightBrushCache()` | Recompiles all `Planet Height Brush` actors targeting this planet. Normal property and transform edits synchronize automatically. |
+| `BeginHeightBrushBulkEdit()` | Defers repeated brush-cache work while an editor script changes many brushes. |
+| `EndHeightBrushBulkEdit()` | Ends a bulk edit and performs the deferred cache update. Pair it with `BeginHeightBrushBulkEdit()`. |
 
 ## Events
 
 | Event | Description |
 | --- | --- |
-| `OnPlanetGenerationFinished` | Broadcast after initial planet generation finishes. |
+| `OnPlanetGenerationFinished` | Broadcast after initial visible terrain and foliage generation finishes. When `Wait For Initial Collision Before Generation Finished` is enabled, it also waits for the collision cells requested on the first runtime generation tick. |
+
+## `UPPGPlanetCollisionInvokerComponent`
+
+Add this component to actors that require nearby terrain or foliage collision. It registers with an explicit `Target Planet` or periodically resolves the nearest planet surface.
+
+| Function | Description |
+| --- | --- |
+| `GetResolvedPlanet()` | Returns the planet currently receiving this component's collision requests. |
+| `Activate()` | Enables the component and refreshes its planet binding. |
+| `Deactivate()` | Stops requests and unregisters the component from its resolved planet. |
+
+The component exposes `Collision Radius`, `Height Margin`, `Height Deactivation Hysteresis`, `Height Prediction Time`, and `Automatic Planet Search Interval` as Blueprint-readable and writable properties.
+
+## `APlanetHeightBrush`
+
+`Planet Height Brush` actors are editor-only sources. Their compiled data is stored on the target Planet Spawner for runtime and cooked builds.
+
+| Function | Description |
+| --- | --- |
+| `CommitBrushChanges()` | Applies Blueprint-authored editor property changes to the target planet cache. Construction, Details-panel edits, transforms, undo, and redo normally synchronize automatically. |
 
 ## `UPlanetData`
 

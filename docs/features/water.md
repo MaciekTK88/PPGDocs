@@ -1,6 +1,6 @@
 # Water
 
-PPG can generate planetary water meshes and drive a Niagara ocean wave simulation.
+PPG can generate planetary water meshes and drive a native C++/HLSL GPU ocean wave simulation.
 
 ## Enabling Water
 
@@ -23,7 +23,7 @@ The spawner controls runtime water generation and simulation behavior.
 
 | Setting | Description |
 | --- | --- |
-| `Enable Niagara Wave Simulation` | Starts or stops the Niagara wave simulation component. |
+| `Enable Ocean Simulation` | Starts or stops the native GPU ocean simulation. |
 | `Max Recursion Water Tessellation` | Water quads per edge for chunks at maximum terrain recursion level. |
 | `Far Water Tessellation` | Water quads per edge for chunks below maximum terrain recursion level. |
 | `Generate Custom Depth Water Coverage` | Generates hidden custom-depth water coverage for underwater post processing. |
@@ -34,7 +34,7 @@ The spawner controls runtime water generation and simulation behavior.
 
 ## Water Simulation Data
 
-`Water Simulation Data Asset` stores parameters uploaded to the Niagara water simulation. It does not store render target bindings.
+`Water Simulation Data Asset` stores the spectral, foam, wind, roughness, and timing parameters used by the native ocean simulation. It does not store render targets.
 
 Notable groups:
 
@@ -45,6 +45,16 @@ Notable groups:
 - `Water|Misc`: repeat period and gravity
 
 The ocean simulation is based on Epic's [Ocean Simulation](https://dev.epicgames.com/community/learning/tutorials/qM1o/unreal-engine-ocean-simulation) community tutorial. That tutorial is also a useful reference for what the simulation parameters mean.
+
+## Shared Simulations
+
+The plugin automatically creates a per-world actor named `PPG Water Simulations`. This actor owns the simulation components and is visible in the World Outliner for inspection, but it is managed by the plugin and cannot be deleted manually.
+
+Each distinct `Water Simulation Data` asset receives one simulation component and one set of transient runtime render targets. Multiple planets using the same asset share those resources and the associated GPU work. Use different data assets when planets need independent wave conditions.
+
+## SM5 and SM6
+
+The native simulation supports D3D11/SM5, D3D12/SM5, and D3D12/SM6. SM6 uses the optimized in-place FFT and single export pass. SM5 uses compatibility scratch resources and two export passes to remain within the eight-UAV limit. The SM5 compatibility path does not reduce SM6 performance.
 
 ## Water Material Nodes
 

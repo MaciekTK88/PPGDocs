@@ -25,11 +25,17 @@ The planet data asset controls:
 
 Higher recursion levels create smaller terrain chunks and allow more local detail. They also increase the number of chunks around the viewer.
 
+## Terrain Stamps
+
+`Planet Height Brush` actors can modify terrain height, biome assignment, material and foliage weights, vertex colors, or remove terrain triangles. Optional texture masks provide local shape control.
+
+See [Terrain Stamps](terrain-stamps.md) for setup, overlap behavior, texture masks, and cache details.
+
 ## Collision
 
-Enable `Generate Collisions` on the spawner to build collision for generated terrain chunks.
+Terrain collision is generated on a fixed planet-wide grid around collision invokers. It is independent of the visible terrain quadtree, so visual LOD changes do not determine where physics exists.
 
-`Collision Disable Distance` controls how far collision remains active. This helps avoid paying collision cost for distant terrain.
+See [Collision Streaming](collision.md) for invoker setup, chunk sizing, foliage collision, editor placement, loading readiness, and performance controls.
 
 ## Nanite
 

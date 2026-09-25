@@ -89,11 +89,18 @@ Select the placed spawner Blueprint in the level and review the first settings y
 | --- | --- |
 | `Planet Data` | The data asset that drives generation. |
 | `Chunk Quality` | Vertex resolution per generated chunk. Higher values cost more memory and build time. |
-| `Generate Collisions` | Creates collision for terrain chunks. |
+| `Generate Collisions` | Enables invoker-driven terrain collision generation. |
+| `Wait For Initial Collision Before Generation Finished` | Keeps the initial loading event pending until requested collision is ready. |
 | `Generate Foliage` | Enables foliage generation from biome foliage data. |
 | `Nanite Landscape` | Builds Nanite terrain meshes where supported. Nanite chunks are slower to build than normal chunks, so enable it for rendering needs rather than faster generation. |
 | `Max Concurrent GPU Generations` | Limits terrain and foliage GPU jobs waiting for readback. |
 | `Use Editor Tick` | Allows editor-time generation/update behavior. |
+
+Add a `PPG Planet Collision Invoker` component to the player character or any physical actor that needs nearby terrain collision. The component requests collision from its explicit `Target Planet`, or automatically selects the nearest planet surface when no target is assigned.
+
+See [Collision Streaming](../features/collision.md) for collision radius, height activation, foliage collision, and editor placement settings.
+
+To author localized terrain changes, place a `Planet Height Brush`, assign its `Target Planet`, and configure its height, biome, vertex-color, or texture-mask settings. See [Terrain Stamps](../features/terrain-stamps.md).
 
 ## 7. Build or Regenerate the Planet
 
@@ -112,6 +119,16 @@ Content/Example/Level/PPGExampleLevel
 Use it to inspect a complete planet configuration, example biome assets, water setup, and character/controller assets.
 
 ![Example level open in the editor](../assets/images/example-level-open.png)
+
+## Navigate Around the Planet
+
+In a perspective level viewport, select a Planet Spawner and enable **Planet Camera** from the Level Editor toolbar. If no valid planet is selected, the camera targets the nearest planet in the viewport world.
+
+Hold the right mouse button to navigate. Mouse look rotates relative to the planet surface, and `E`/`Q` moves radially away from or toward the planet. Use **Retarget Planet Camera** after selecting another planet.
+
+Actors placed while Planet Camera is enabled are aligned to the surface of the targeted planet. Disable the mode to restore normal world-relative editor navigation.
+
+See [Planet Camera](../features/planet-camera.md) for behavior and limitations.
 
 ## Alternative Quick Start Video Tutorial
 

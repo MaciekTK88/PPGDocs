@@ -9,7 +9,20 @@ PPG material expressions appear in the `PPG` material node category, with water 
 | `Planet Position` | Returns a chunk-stable float direction from the planet center for generation and biome-mask graphs. It can optionally apply `Planet Position Scale`. |
 | `Planet Position LWC` | Returns per-pixel LWC planet-local position for precision-sensitive surface mapping. Use `Planet Position`, not this node, with PPG generation noise. |
 | `Planet UVs` | Generates planet surface UVs. Useful for high-precision surface material mapping. |
+| `Planet Texture Sample` | Samples an equirectangular texture using the current planet position. |
 | `Planet Warp Position` | Warps a planet-space position, usually before noise or biome lookup. |
+
+### Planet Texture Sample
+
+Connect a 2D Texture Object. The node obtains the planet position internally. Use the channel outputs for heightmaps, color, packed data, normals, and masks.
+
+| Material | Supported Textures |
+| --- | --- |
+| Surface | 2D textures and Streaming Virtual Textures |
+| Generation | Non-virtual 2D textures |
+| Biome mask | Non-virtual 2D textures |
+
+The node supports Unreal texture sampler types including Color, Linear Color, Grayscale, Linear Grayscale, Alpha, Masks, Data, and Normal. The texture uses equirectangular mapping with `+X` at the horizontal center, `+Y` advancing horizontally, and `+Z` at the top.
 
 ## Noise and Height Nodes
 

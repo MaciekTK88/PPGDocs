@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | Planet Data Asset | `UPlanetData` | Main planet setup data asset. |
 | Foliage Data Asset | `UFoliageData` | Per-biome foliage configuration. |
-| Water Simulation Data Asset | `UWaterSimulationData` | Niagara ocean simulation parameters. |
+| Water Simulation Data Asset | `UWaterSimulationData` | Native GPU ocean simulation parameters. |
 
 ## Main Runtime Actor
 
@@ -37,7 +37,7 @@ Water-related assets are grouped under:
 Content/Water/
 ```
 
-This includes materials, render targets, material functions, Niagara modules, and effects used by the ocean simulation.
+This includes the default water simulation data asset, water materials, and material functions. Runtime render targets are created dynamically by the native ocean simulation.
 
 ## Cloud Assets
 
@@ -55,4 +55,4 @@ The plugin includes third-party notices under:
 ThirdPartyNotices/
 ```
 
-VoxelCore-derived code is bundled in the plugin, and the plugin uses DeathreyCG's Niagara ocean wave simulation tutorial as the basis for the ocean simulation.
+VoxelCore-derived code is bundled in the plugin. The native C++/HLSL ocean simulation is based on DeathreyCG's original Niagara ocean wave implementation.

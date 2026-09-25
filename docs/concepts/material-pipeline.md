@@ -16,18 +16,21 @@ The rebuild pipeline checks the first two materials strictly. If the biome mask 
 
 ## Pipeline Overview
 
-1. `Biome Mask Material` evaluates the per-biome masks and bakes the `Biome Cell Map` stored on the Planet Data asset.
+1. `Biome Mask Material` evaluates the per-biome masks and bakes the `Biome Cell Map` stored on the Planet Data asset. Generation Biome stamps are compiled into the planet's composed copy of this map.
 2. For each terrain chunk, the chunk object prepares a grid of vertices for the selected cube-face patch and recursion level.
-3. The compute shader evaluates the `Generation Material` on that grid. It uses the Planet Data settings and baked `Biome Cell Map` to compute global height, selected biome heights, blended elevation, normals, slope, biome IDs, biome strengths, and vertex colors.
-4. The terrain readback returns vertex positions, vertex colors, packed normals, biome indices, and slope values. Chunk UVs are generated on the CPU, and per-vertex height is derived from the returned position.
-5. The chunk builds a runtime static mesh or Nanite mesh from the generated positions, packed normals, UVs, vertex colors, and shared triangle indices.
-6. Collision, ray tracing proxy data, water meshes, and foliage data are created according to the spawner settings.
-7. The visible `Planet Material` is assigned to the terrain mesh. The chunk also creates a per-chunk runtime render target named `BiomeMap` and sets it as a texture parameter on that material.
-8. In the surface material, `Planet Biome Map Sample` owns and reads the fixed `BiomeMap` texture parameter and outputs the three strongest `Biome IDs` and `Strengths`.
-9. `Planet Biome Material Output` maps the Planet Data biome IDs to its named entries, then selects and blends the corresponding Material Attributes.
-10. `Planet Biome Strengths` can expose any of those strengths as named scalar masks for other surface-material logic.
+3. The compute shader evaluates the `Generation Material` on that grid. It uses the Planet Data settings and active biome-cell map to compute global height, selected biome heights, blended elevation, normals, slope, biome IDs, biome strengths, and vertex colors.
+4. Candidate terrain stamps apply height operations, material and foliage biome changes, vertex-color overrides, and cutouts. Material + Foliage stamps do not evaluate the target biome's height graph.
+5. The terrain readback returns modified vertex positions, vertex colors, packed normals, biome indices, slope values, and cutout state. Chunk UVs are generated on the CPU, and per-vertex height is derived from the returned position.
+6. The chunk builds a runtime static mesh or Nanite mesh from the generated positions, packed normals, UVs, vertex colors, and surviving triangle indices.
+7. Ray tracing proxy data, water meshes, and visible foliage data are created according to the spawner settings. Collision-grid chunks evaluate the same generation material and compiled stamps through their independent invoker-driven pipeline.
+8. The visible `Planet Material` is assigned to the terrain mesh. The chunk also creates a per-chunk runtime render target named `BiomeMap` and sets it as a texture parameter on that material.
+9. In the surface material, `Planet Biome Map Sample` owns and reads the fixed `BiomeMap` texture parameter and outputs the three strongest `Biome IDs` and `Strengths`.
+10. `Planet Biome Material Output` maps the Planet Data biome IDs to its named entries, then selects and blends the corresponding Material Attributes.
+11. `Planet Biome Strengths` can expose any of those strengths as named scalar masks for other surface-material logic.
 
 `Biome Cell Map` and `BiomeMap` are different resources. `Biome Cell Map` is the baked Planet Data texture used to choose biomes across the planet. `BiomeMap` is generated per chunk and is used by the surface material to render the chunk's current biome blend.
+
+Terrain stamps are evaluated after procedural biome-height blending. Their modified positions feed the normal, slope, foliage, collision, Nanite, bounds, and water paths. See [Terrain Stamps](../features/terrain-stamps.md).
 
 ## Biome Mask Material
 
@@ -54,6 +57,8 @@ It also owns biome transition, height-based material blending, and Voronoi warp 
 Typical generation nodes:
 
 - `Planet Position`
+- `Planet Position LWC`
+- `Planet Texture Sample`
 - `Planet Noise`
 - `Planet Global Height`
 - `Planet Cell Origin`
@@ -64,6 +69,8 @@ Typical generation nodes:
 ## Surface Material
 
 The surface material is the visible material assigned as `Planet Material` on the Planet Data asset.
+
+Use `Planet Texture Sample` to map equirectangular height, color, packed-data, or normal textures across the planet. The node obtains the planet position internally. Surface materials support both regular 2D Texture Objects and Streaming Virtual Texture Objects.
 
 For biome materials, use this graph shape:
 
