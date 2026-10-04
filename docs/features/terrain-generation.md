@@ -25,6 +25,18 @@ The planet data asset controls:
 
 Higher recursion levels create smaller terrain chunks and allow more local detail. They also increase the number of chunks around the viewer.
 
+## Screen Space LOD
+
+Enable `Use Screen Space LOD` on the spawner to select terrain recursion from projected vertex spacing on screen. `LOD Target Pixel Error` is the split threshold: lower values retain finer chunks farther from the camera. `LOD Merge Hysteresis` keeps a chunk from repeatedly splitting and merging near the threshold. `LOD Geometric Error Scale` adjusts the estimated error when the default selection is too coarse or too fine.
+
+The Planet Data asset's minimum and maximum recursion levels still bound the available detail. Increase detail only where it is visible; finer LODs also raise chunk generation and memory costs.
+
+## Generated Surface Normals
+
+Enable `Generate Detailed Normals` on the spawner and place `Planet Apply Generated Surface Normal` after the completed Material Attributes in the planet surface material. Connect its output directly to the material output, then regenerate existing chunks. The node uses the generated full-resolution terrain normal while preserving normal-map detail already present in the attributes. Disable `Preserve Material Normal Detail` on the node if only the generated shape normal is wanted.
+
+`Planet Generated Surface Normal` exposes that normal and radial slope for material masks. Use its slope outputs when a material needs terrain slope that remains detailed on distant, reduced-density geometry. Detailed normals add a generated texture per visible chunk; leave the option disabled if the material does not use it.
+
 ## Terrain Stamps
 
 `Planet Height Brush` actors can modify terrain height, biome assignment, material and foliage weights, vertex colors, or remove terrain triangles. Optional texture masks provide local shape control.
@@ -80,5 +92,7 @@ Use these spawner controls to trade total generation time for steadier frame tim
 - `Max Chunk Completions Per Frame`
 - `Max Concurrent GPU Generations`
 - `Max Concurrent Mesh Builds`
+
+`Use Lightweight Terrain Component` uses a render-only component for ordinary non-Nanite visual chunks. Keep it enabled unless a project needs to compare the alternative static-mesh path. Nanite, collision, and ray-tracing proxy chunks use their required paths.
 
 `Get Planet Generation Status` returns the current phase, progress, completed/total chunk counts, elapsed milliseconds, error text, and whether generation is active.

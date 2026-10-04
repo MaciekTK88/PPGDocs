@@ -8,15 +8,17 @@ The plugin contains runtime code, shaders, editor-facing data assets, material n
 
 ## What PPG Provides
 
-- Runtime spherical terrain generation with streamed chunk meshes, configurable LOD recursion, and editor-time regeneration.
+- Runtime spherical terrain generation with streamed chunk meshes, configurable screen-space or distance-based LOD, generated surface normals, and editor-time regeneration.
 - Material-driven planet authoring with custom nodes for elevation, biome masks, vertex colors, biome material blending, planet-space coordinates, water, and underwater effects.
 - Planet-wide biome generation with up to 16 biome layers, Voronoi cell controls, smooth transitions, height blending, and name-synced material outputs.
-- Texture-masked terrain stamps for height sculpting, biome, material, foliage and vertex-color painting, and terrain cutouts.
+- Texture-masked terrain stamps and spline brushes for height sculpting, biome, material, foliage and vertex-color painting, and terrain cutouts.
 - Biome-based foliage spawning with mesh variants, density controls, slope and height filters, vertex-color masks, cross-chunk clustering, per-entry LOD/WPO settings, and CPU or GPU rendering paths.
-- Planetary ocean support with generated water meshes, water skirts, custom-depth underwater coverage, water material nodes, and a native GPU wave simulation.
+- Planetary ocean support with generated water meshes, seamless wave mapping, Single Layer Water shading, custom-depth underwater coverage, and a native GPU wave simulation.
 - Invoker-driven terrain and foliage collision streaming on a planet-wide virtual grid, independent of visible terrain LOD.
+- Planet navigation meshes for AI, with invoker, runtime region, and baked coverage.
 - Rendering options for standard static mesh chunks, Nanite terrain chunks, and ray tracing proxy generation for Hardware Lumen projects.
-- Volumetric cloud parameter helpers, gravity-relative controller utilities, and a double-precision floating origin for spherical-world gameplay.
+- Multiple planetary atmospheres, a camera-following skylight, volumetric cloud parameter helpers, gravity-relative controller utilities, and a double-precision floating origin for spherical-world gameplay.
+- Cached Blueprint surface queries for biome strengths and distance above generated terrain.
 - Planet-relative editor camera controls for intuitive surface navigation and surface-aligned actor placement anywhere on a planet.
 - Blueprint-readable generation phase, progress, timing, and error reporting for loading screens and runtime diagnostics.
 - Example content, materials, data assets, and an example level to use as a working reference.

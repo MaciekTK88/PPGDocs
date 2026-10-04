@@ -44,6 +44,12 @@ These controls moved from Planet Data to the material output nodes that use them
 | `Show Generation Debug` | Displays current generation progress and timing. |
 | `Planet Data` | Planet Data asset used by the placed spawner. |
 | `Chunk Quality` | Terrain vertex resolution per chunk. Runtime changes apply when chunks are generated; use `RegeneratePlanet()` to rebuild existing chunks. |
+| `Use Screen Space LOD` | Selects terrain recursion from projected screen-space error. |
+| `LOD Target Pixel Error` | Projected split threshold; lower values select more detail. |
+| `LOD Merge Hysteresis` | Fraction of the split threshold used for merging to reduce LOD oscillation. |
+| `LOD Geometric Error Scale` | Scales the estimated error used by screen-space LOD. |
+| `Generate Detailed Normals` | Generates full-resolution terrain normal textures. Requires `Planet Apply Generated Surface Normal` in the surface material and regeneration after changing. |
+| `Use Lightweight Terrain Component` | Uses the render-only path for ordinary non-Nanite visual chunks. |
 | `Height Brush Texture Resolution Clamp` | Maximum dimension retained when compiling brush texture masks. Smaller textures keep their source resolution. |
 | `Generate Collisions` | Enables terrain collision streaming around collision invokers. |
 | `Wait For Initial Collision Before Generation Finished` | Delays `On Planet Generation Finished` until the collision cells requested on the first runtime generation tick are ready. |
@@ -67,6 +73,8 @@ These controls moved from Planet Data to the material output nodes that use them
 | `Foliage Shadow Cache Mode` | `Accurate` keeps animated WPO shadows correct; `Cached` reduces invalidation at the cost of rigid shadows. |
 | `Foliage Minimum Biome Blend Strength` | Ignores negligible biome contributions during foliage spawning. |
 | `Global Foliage Density Scale` | Global foliage density multiplier. |
+| `Surface Query Interval` | Minimum interval between asynchronous batches of registered actor surface samples. |
+| `Max Surface Queries Per Batch` | Maximum actors sampled per batch; larger sets are served round-robin. |
 | `Enable Ocean Simulation` | Runs the native GPU ocean simulation. |
 | `Max Recursion Water Tessellation` | High-detail water tessellation. |
 | `Far Water Tessellation` | Distant water tessellation. |

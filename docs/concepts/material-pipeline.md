@@ -80,6 +80,8 @@ For biome materials, use this graph shape:
 4. Connect one Material Attributes graph to each named biome input on `Planet Biome Material Output`.
 5. Connect `Planet Biome Material Output` to the material's Material Attributes output.
 
+If the spawner uses `Generate Detailed Normals`, place `Planet Apply Generated Surface Normal` between the completed Material Attributes and the material output. It preserves the biome materials' normal-map detail by default. See [Generated Surface Normals](../features/terrain-generation.md#generated-surface-normals).
+
 At runtime, every terrain chunk replaces the sample node's `BiomeMap` parameter with its generated per-chunk texture.
 
 ### Named Biome Strength Masks

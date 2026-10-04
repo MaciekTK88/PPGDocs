@@ -21,6 +21,18 @@ This page lists the main Blueprint/C++ entry points exposed by the plugin.
 | `SetNewFloatingWorldOrigin(FVector)` | Makes a current local-world position the new local zero through PPG's double-precision floating origin. Returns whether the shift succeeded. |
 | `SetNewWorldOrigin(FVector)` | Compatibility wrapper around `SetNewFloatingWorldOrigin`. |
 
+### Surface Queries
+
+To read generated terrain and biome values for a moving actor in Blueprint:
+
+1. Call `Register Surface Query Actor` on the target spawner with the actor and the biome names to sample.
+2. Call `Get Surface Query Result` later and use its output only when it returns true.
+3. Call `Unregister Surface Query Actor` when the actor no longer needs samples.
+
+The result contains `Height Above Surface` (signed radial distance in centimeters), generated `Height` above the base radius, sampled and surface world locations, sample time, and biome strengths in the same order as the requested names. An unknown biome name returns strength zero and index `-1`.
+
+Samples are asynchronous and cached; they are not physics traces or immediate measurements at the actor's current position. `Sample World Location` and `Sample Time Seconds` show where and when the returned sample was submitted. The result is invalid until a sample is ready and while no generated terrain chunk covers the actor. `Surface Query Interval` and `Max Surface Queries Per Batch` control sampling frequency and batch size.
+
 Editor-only brush functions:
 
 | Function | Description |
@@ -54,6 +66,12 @@ The component exposes `Collision Radius`, `Height Margin`, `Height Deactivation 
 | Function | Description |
 | --- | --- |
 | `CommitBrushChanges()` | Applies Blueprint-authored editor property changes to the target planet cache. Construction, Details-panel edits, transforms, undo, and redo normally synchronize automatically. |
+
+`APlanetSplineBrush` inherits the brush controls and `CommitBrushChanges()`. Its `Spline` component defines the path.
+
+## Planet Navigation
+
+`UPPGNavigationBlueprintLibrary` exposes `Find Planet Path`, `Project Point to Planet Navigation`, and random reachable or navigable point queries. `UPPGNavigationRegionComponent` exposes `MarkNavigationDirty()`, `BeginNavigationEdit()`, `EndNavigationEdit()`, and `IsNavigationReady()`. See [Planet Navigation](../features/navigation.md) for coverage and agent setup.
 
 ## `UPlanetData`
 

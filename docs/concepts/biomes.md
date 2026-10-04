@@ -49,6 +49,10 @@ Each biome entry can reference a `Foliage Data Asset`. During terrain generation
 - vertex-color density channels
 - global foliage density scale on the spawner
 
+## Biome Strengths in Blueprint
+
+Register an actor with the planet spawner's `Register Surface Query Actor` node and pass the biome names to sample. `Get Surface Query Result` returns strengths in that same name order, along with the actor's signed `Height Above Surface`, when a cached sample is valid. Samples are asynchronous. See [Surface Queries](../reference/runtime-api.md#surface-queries) for the Blueprint workflow and result fields.
+
 ## Editing Biomes
 
 After adding, removing, or reordering biome layers, run:

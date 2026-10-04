@@ -2,6 +2,8 @@
 
 `Planet Height Brush` actors provide localized, editor-authored changes to a generated planet. A brush can sculpt terrain, assign biomes, modify material and foliage weights, override vertex-color channels, or remove terrain.
 
+For the same effects along a curved path, use a [Spline Brush](splines.md).
+
 Brush actors are editor-only sources. Each target Planet Spawner stores the compiled brush primitives, texture masks, biome-cell composition, and sparse spatial index required by runtime and cooked builds.
 
 ## Adding a Brush

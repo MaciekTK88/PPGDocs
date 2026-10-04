@@ -11,6 +11,8 @@ PPG material expressions appear in the `PPG` material node category, with water 
 | `Planet UVs` | Generates planet surface UVs. Useful for high-precision surface material mapping. |
 | `Planet Texture Sample` | Samples an equirectangular texture using the current planet position. |
 | `Planet Warp Position` | Warps a planet-space position, usually before noise or biome lookup. |
+| `Planet Generated Surface Normal` | Returns the generated terrain normal in world space and radial slope, independent of distant geometry density. |
+| `Planet Apply Generated Surface Normal` | Applies that normal to completed Material Attributes and can preserve their normal-map detail. |
 
 ### Planet Texture Sample
 
@@ -70,6 +72,10 @@ The node supports Unreal texture sampler types including Color, Linear Color, Gr
 | --- | --- |
 | `Planetary Water Shading` | Shades planetary water using light direction, water depth, scattering, absorption, normals, view direction, and horizon-aware ambient controls. |
 | `Planetary Underwater Post Process` | Applies underwater post-processing using scene color, water path length, underwater mask, camera depth, light direction, and water optical coefficients. |
+| `Planetary Single Layer Water` | Outputs Single Layer Water scattering, absorption, phase, behind-water color, and radial planet geometry. Requires the corresponding shader hook. |
+| `Planet Seamless Water` | Samples ocean waves across planet faces for displacement, normal, foam, and Jacobian. |
+| `Planet Water Vertex Coordinates` | Supplies four packed cascade coordinates for `Planet Seamless Water` through vertex interpolators. |
+| `Planet Water UV` | Supplies tiled texture UVs and grid UVs for water height masks. |
 
 ## Required Output Nodes
 

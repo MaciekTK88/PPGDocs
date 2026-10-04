@@ -19,6 +19,8 @@ Then assign:
 
 The spawner controls runtime water generation and simulation behavior.
 
+For water using the `Single Layer Water` shading model, use the `Planetary Single Layer Water` output in the water material. Its scattering and absorption coefficients are per centimeter; `Density Scale` multiplies both. The planetary output supplies radial sea-surface geometry to PPG's water shader hook. Install **Planetary Single Layer Water** under **Project Settings > Plugins > Procedural Planet Generation - Shader Hooks**, restart the editor, and recompile the material.
+
 ## Spawner Water Settings
 
 | Setting | Description |
@@ -62,8 +64,25 @@ PPG includes water-specific material expressions:
 
 - `Planetary Water Shading`
 - `Planetary Underwater Post Process`
+- `Planetary Single Layer Water`
+- `Planet Seamless Water`
+- `Planet Water Vertex Coordinates`
+- `Planet Water UV`
 
-Use these in water and post-process materials when you need physically motivated scattering, absorption, horizon-aware lighting, and underwater color attenuation.
+Use the nodes that match the material's wave, water shading, and underwater effects.
+
+### Seamless Wave Mapping
+
+`Planet Seamless Water` samples the ocean simulation across cube faces. Its outputs provide world-space displacement and normal, foam, and Jacobian:
+
+1. Connect `Displacement WS` to the water material's world-position offset path.
+2. Pass each `Packed Cascade 0–3` output of `Planet Water Vertex Coordinates` through its own `VertexInterpolator` to the matching `Vertex Cascade 0–3` input on `Planet Seamless Water`.
+3. Use `Normal WS` for wave shading. Transform it to tangent space when the material uses tangent-space normals.
+4. Use `Foam` as a mask for foam color, roughness, or normal detail.
+
+`Wave Strength` defaults to 1, and disconnected `Cascade Weights` enable all four cascades. Keep the same strength and weights for displacement and shading. `Precise Close Normals` improves nearby normal filtering at additional texture-sampling cost.
+
+`Planet Water UV` supplies a tiled UV for decorative foam or normal textures. Its `Grid UV` output is for the generated height-mask sampling path; keep it connected when the water material uses terrain height to attenuate waves.
 
 ![Planetary ocean water surface](../assets/images/water-surface.png)
 

@@ -96,7 +96,7 @@ Select the placed spawner Blueprint in the level and review the first settings y
 | `Max Concurrent GPU Generations` | Limits terrain and foliage GPU jobs waiting for readback. |
 | `Use Editor Tick` | Allows editor-time generation/update behavior. |
 
-Add a `PPG Planet Collision Invoker` component to the player character or any physical actor that needs nearby terrain collision. The component requests collision from its explicit `Target Planet`, or automatically selects the nearest planet surface when no target is assigned.
+Add a `PPG Planet Collision Invoker` component to a physical actor that needs nearby terrain collision. A `PPG Navigation Invoker Component` already fills this role when `Independent Navigation Generation` is disabled. For independent navigation over a larger area, use a separate collision invoker for the smaller area where physics is needed. Collision invokers use an explicit `Target Planet` or automatically select the nearest planet surface.
 
 See [Collision Streaming](../features/collision.md) for collision radius, height activation, foliage collision, and editor placement settings.
 

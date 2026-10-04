@@ -2,11 +2,11 @@
 
 PPG generates terrain collision on a planet-wide virtual grid that is independent of the visible terrain quadtree. Every collision cell at the selected grid level has the same effective size and sampling layout. Canonical cube-face cell keys prevent multiple invokers from creating duplicate collision chunks in the same location.
 
-Collision chunks evaluate the same generation material as visible terrain. They are generated only around active collision invokers and are removed after they leave the retained area.
+Collision chunks evaluate the same generation material as visible terrain. Active collision invokers and collision-backed navigation coverage request them; chunks are removed after they leave the retained area.
 
 ## Collision Invokers
 
-Add a `PPG Planet Collision Invoker` component to every character, vehicle, physics object, or other actor that requires nearby collision.
+Add a `PPG Planet Collision Invoker` component to characters, vehicles, physics objects, or other actors that require nearby collision. A `PPG Navigation Invoker Component` also serves as a collision invoker when its generation settings have `Independent Navigation Generation` disabled. When that setting is enabled, add a separate collision invoker only where physics collision is needed.
 
 | Setting | Description | Default |
 | --- | --- | --- |

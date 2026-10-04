@@ -52,8 +52,11 @@ nav:
       - features/index.md
       - Terrain Generation: features/terrain-generation.md
       - Terrain Stamps: features/terrain-stamps.md
+      - Spline Brushes: features/splines.md
       - Collision Streaming: features/collision.md
+      - Planet Navigation: features/navigation.md
       - Water: features/water.md
+      - Atmospheres and Skylight: features/atmosphere.md
       - Foliage: features/foliage.md
       - Planet Camera: features/planet-camera.md
       - Clouds and Gravity: features/clouds-and-gravity.md
